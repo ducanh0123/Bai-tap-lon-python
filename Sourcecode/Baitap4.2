@@ -1,0 +1,135 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+
+# 1. Chuẩn bị dữ liệu (ví dụ DataFrame)
+# Trong thực tế, bạn sẽ đọc dữ liệu từ file CSV, database, hoặc API
+player_data = pd.DataFrame({
+    'Tuổi': [25, 28, 22, 30, 24, 27, 23, 29],
+    'So_tran_da': [150, 200, 100, 250, 120, 180, 90, 220],
+    'So_ban_thang': [50, 65, 30, 70, 40, 55, 25, 60],
+    'Kien_tao': [30, 40, 20, 45, 25, 35, 15, 38],
+    'Thoi_han_hop_dong': [2, 1, 3, 1, 2, 2, 4, 1],  # Năm còn lại
+    'Gia_tri': [80, 95, 55, 105, 70, 88, 50, 100]  # Giá trị (triệu Euro) - Mục tiêu dự đoán
+})
+
+# 2. Chọn thuộc tính (Features)
+features = ['Tuổi', 'So_tran_da', 'So_ban_thang', 'Kien_tao', 'Thoi_han_hop_dong']
+X = player_data[features]
+y = player_data['Gia_tri']
+
+# 3. Chia dữ liệu thành tập huấn luyện và tập kiểm tra
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# 4. Chọn và huấn luyện mô hình (Linear Regression)
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+# 5. Dự đoán giá trị trên tập kiểm tra
+y_pred = model.predict(X_test)
+
+# 6. Đánh giá mô hình
+mse = mean_squared_error(y_test, y_pred)
+print(f'Mean Squared Error trên tập kiểm tra: {mse:.2f}')
+
+# 7. Sử dụng mô hình để dự đoán giá trị cho cầu thủ mới
+new_player_data = pd.DataFrame({
+    'Tuổi': [26],
+    'So_tran_da': [160],
+    'So_ban_thang': [52],
+    'Kien_tao': [33],
+    'Thoi_han_hop_dong': [2]
+})
+
+predicted_value = model.predict(new_player_data)
+print(f'Giá trị dự đoán cho cầu thủ mới: {predicted_value[0]:.2f} triệu Euro')
+
+# (Phần mở rộng tiềm năng)
+# - Thêm nhiều thuộc tính hơn.
+# - Sử dụng các mô hình phức tạp hơn (ví dụ: RandomForestRegressor, GradientBoostingRegressor).
+# - Thực hiện tiền xử lý dữ liệu (ví dụ: chuẩn hóa, mã hóa biến categorical).
+# - Tinh chỉnh siêu tham số của mô hình.
+# - Kết hợp với đánh giá của chuyên gia và yếu tố thị trường.
+
+
+Phương Pháp Ước Tính Giá Trị Cầu Thủ Đề Xuất
+
+Phương pháp tôi đề xuất là kết hợp phân tích thống kê dựa trên dữ liệu lịch sử với đánh giá định tính từ các chuyên gia và yếu tố thị trường hiện tại. Cụ thể, quy trình có thể như sau:
+
+Thu thập và Xử lý Dữ liệu:
+
+Thu thập dữ liệu lịch sử phong phú về cầu thủ, bao gồm thống kê thi đấu, thông tin cá nhân, hợp đồng, lịch sử chuyển nhượng, v.v.
+Làm sạch và tiền xử lý dữ liệu để đảm bảo tính nhất quán và loại bỏ các giá trị ngoại lệ hoặc thiếu sót.
+Tạo các thuộc tính (features) phù hợp từ dữ liệu thô.
+Xây dựng Mô hình Ước tính:
+
+Sử dụng các mô hình học máy (Machine Learning) dựa trên dữ liệu lịch sử để dự đoán giá trị cơ bản của cầu thủ.
+Huấn luyện và đánh giá hiệu suất của mô hình trên tập dữ liệu lịch sử đã được chuẩn bị.
+Đánh giá Định tính từ Chuyên gia:
+
+Tham khảo ý kiến của các chuyên gia bóng đá (scouts, huấn luyện viên, nhà phân tích) để thu thập đánh giá chủ quan về tiềm năng, phong độ hiện tại, tầm ảnh hưởng trong đội, và các yếu tố phi thống kê khác của cầu thủ.
+Sử dụng các kỹ thuật như chấm điểm hoặc phỏng vấn có cấu trúc để hệ thống hóa các đánh giá này.
+Xem xét Yếu tố Thị trường:
+
+Phân tích các yếu tố thị trường hiện tại có thể ảnh hưởng đến giá trị, bao gồm:
+Nhu cầu và khả năng tài chính của các câu lạc bộ.
+Vị trí và sự khan hiếm của các cầu thủ ở vị trí đó.
+Xu hướng chuyển nhượng hiện tại.
+Ảnh hưởng của người đại diện.
+Các yếu tố kinh tế vĩ mô.
+Kết hợp và Điều chỉnh:
+
+Kết hợp kết quả từ mô hình ước tính, đánh giá của chuyên gia và phân tích thị trường để đưa ra giá trị cuối cùng.
+Sử dụng các quy tắc hoặc mô hình kết hợp (ví dụ: weighted average) để tích hợp các nguồn thông tin khác nhau.
+Thực hiện điều chỉnh thủ công dựa trên các yếu tố đặc biệt hoặc thông tin mới nhất.
+Lựa Chọn Thuộc Tính (Features)
+
+Việc lựa chọn thuộc tính đóng vai trò then chốt trong việc xây dựng một mô hình ước tính giá trị chính xác. Tôi sẽ ưu tiên các nhóm thuộc tính sau:
+
+Thống kê Thi Đấu (Performance Statistics):
+
+Tấn công: Số bàn thắng, kiến tạo, số lần dứt điểm, tỷ lệ dứt điểm trúng đích, số cơ hội tạo ra, xG (expected goals), xA (expected assists), số lần rê bóng thành công, số đường chuyền quyết định. (Phân biệt theo vị trí: ví dụ, số lần tắc bóng thành công, đánh chặn cho hậu vệ/tiền vệ phòng ngự).
+Phòng ngự: Số lần tắc bóng, đánh chặn, phá bóng, tranh chấp tay đôi thắng, không chiến thắng.
+Chuyền bóng: Tỷ lệ chuyền bóng chính xác, số đường chuyền quan trọng, số đường chuyền vào 1/3 cuối sân, số đường chuyền dài/ngắn thành công.
+Thể lực và Khả năng di chuyển: Số phút đã chơi, quãng đường di chuyển trung bình mỗi trận, tốc độ tối đa.
+Thống kê thủ môn (nếu là thủ môn): Số lần cứu thua, tỷ lệ cứu thua, số bàn thua phải nhận, số trận giữ sạch lưới, xGA (expected goals against).
+Thông Tin Cá Nhân (Personal Information):
+
+Tuổi: Một trong những yếu tố quan trọng nhất, thường có mối quan hệ phi tuyến tính với giá trị (giá trị cao nhất ở độ tuổi đỉnh cao phong độ).
+Vị trí: Các vị trí có nhu cầu cao hoặc khan hiếm thường có giá trị cao hơn.
+Quốc tịch: Đôi khi có ảnh hưởng nhỏ do quy định giải đấu hoặc sức hút thị trường.
+Kinh nghiệm: Số trận đã chơi ở các giải đấu lớn, cấp độ đội tuyển.
+Danh hiệu: Số lượng và tầm cỡ các danh hiệu đã giành được.
+Thông Tin Hợp Đồng (Contract Information):
+
+Thời hạn hợp đồng còn lại: Cầu thủ có thời hạn hợp đồng ngắn thường có giá trị chuyển nhượng thấp hơn.
+Mức lương hiện tại: Có thể ảnh hưởng đến khả năng chi trả của các câu lạc bộ.
+Điều khoản giải phóng (buy-out clause): Nếu có, đây là một mức giá tham khảo quan trọng.
+Lịch Sử Chuyển Nhượng (Transfer History):
+
+Phí chuyển nhượng trước đây: Các mức phí chuyển nhượng trong quá khứ cho thấy giá trị tiềm năng.
+Tần suất chuyển nhượng: Cầu thủ được nhiều câu lạc bộ quan tâm có thể có giá trị cao hơn.
+Yếu Tố Thị Trường và Danh Tiếng (Market Factors and Reputation):
+
+Sức hút thương mại: Khả năng thu hút người hâm mộ, tài trợ.
+Ảnh hưởng trên mạng xã hội: Mức độ nổi tiếng và tương tác trực tuyến.
+Uy tín và danh tiếng: Được đánh giá cao bởi giới chuyên môn và người hâm mộ.
+Tiềm năng phát triển: Đánh giá về khả năng cải thiện trong tương lai.
+Lựa Chọn Mô Hình (Model)
+
+Đối với mô hình ước tính giá trị, tôi sẽ xem xét một số lựa chọn sau, tùy thuộc vào dữ liệu có sẵn và mục tiêu cụ thể:
+
+Mô hình Hồi quy tuyến tính (Linear Regression): Đơn giản và dễ giải thích, nhưng có thể không nắm bắt được các mối quan hệ phi tuyến tính phức tạp.
+Mô hình Hồi quy đa thức (Polynomial Regression): Có thể mô hình hóa các mối quan hệ phi tuyến tính, ví dụ như ảnh hưởng của tuổi tác.
+Mô hình Cây quyết định và Rừng ngẫu nhiên (Decision Trees and Random Forests): Mạnh mẽ trong việc xử lý dữ liệu phi tuyến tính và tương tác giữa các thuộc tính, đồng thời cung cấp khả năng giải thích mức độ quan trọng của thuộc tính.
+Mô hình Gradient Boosting (ví dụ: XGBoost, LightGBM): Thường cho hiệu suất dự đoán rất tốt và có khả năng xử lý dữ liệu phức tạp.
+Mạng nơ-ron (Neural Networks): Có khả năng học các mối quan hệ phức tạp và trừu tượng, đặc biệt khi có lượng dữ liệu lớn. Tuy nhiên, có thể khó giải thích hơn.
+Lý do lựa chọn:
+
+Tôi có xu hướng nghiêng về các mô hình như Rừng ngẫu nhiên hoặc Gradient Boosting làm mô hình cơ sở ban đầu. Lý do là:
+
+Khả năng xử lý phi tuyến tính: Giá trị cầu thủ không phải là một hàm tuyến tính đơn giản của các thuộc tính.
+Xử lý tương tác giữa các thuộc tính: Các thuộc tính có thể tương tác với nhau (ví dụ, tốc độ của một tiền đạo có thể quan trọng hơn nếu anh ta chơi cho một đội phản công nhanh).
+Khả năng đánh giá tầm quan trọng của thuộc tính: Giúp hiểu rõ hơn yếu tố nào ảnh hưởng nhiều nhất đến giá trị.
+Hiệu suất dự đoán tốt: Thường đạt được độ chính xác cao trong các bài toán hồi quy.
