@@ -1,0 +1,38 @@
+#Find the median for each statistic. Calculate the mean and standard deviation for each 
+#statistic across all players and for each team. Save the results to a file named 'results2.csv' 
+#with the following format(Tính trung vị (median) cho mỗi chỉ số. Tính trung bình (mean) và độ lệch chuẩn (standard deviation) cho mỗi chỉ số trên toàn bộ cầu thủ và từng đội bóng. Lưu kết quả vào tệp 'results2.csv' với định dạng sau:)
+
+numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
+
+def summarize(df_sub):
+    summary = {}
+    for col in numeric_cols:
+        summary[f'Median of {col}'] = df_sub[col].median()
+        summary[f'Mean of {col}'] = df_sub[col].mean()
+        summary[f'Std of {col}'] = df_sub[col].std()
+    return summary
+
+summary_list = []
+
+all_summary = summarize(df)
+all_summary["Team"] = "all"
+summary_list.append(all_summary)
+
+if "Squad" in df.columns:
+    for team in df["Squad"].unique():
+        team_df = df[df["Squad"] == team]
+        team_summary = summarize(team_df)
+        team_summary["Team"] = team
+        summary_list.append(team_summary)
+
+results_df = pd.DataFrame(summary_list)
+results_df = results_df[["Team"] + [col for col in results_df.columns if col != "Team"]]
+results_df.to_csv("results2.csv", index=False)
+print(" Đã lưu results2.csv với định dạng yêu cầu.")
+
+| Team    | Median of Goals | Mean of Goals | Std of Goals | Median of Assists | ... |
+| ------- | --------------- | ------------- | ------------ | ----------------- | --- |
+| all     | 2.0             | 2.56          | 1.24         | 1.0               | ... |
+| Arsenal | 3.0             | 2.87          | 1.01         | 1.2               | ... |
+| Chelsea | 1.0             | 1.76          | 0.88         | 0.7               | ... |
+
