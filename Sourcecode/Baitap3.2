@@ -1,0 +1,20 @@
+📌 Trả lời câu hỏi bài tập
+• Nên phân bao nhiêu nhóm? Tại sao?
+Dựa trên biểu đồ Elbow (được lưu thành elbow_plot.png), ta thấy điểm "góc khuỷu" rõ rệt xuất hiện tại K = 3. Đây là điểm mà việc tăng thêm số cụm không làm giảm rõ rệt tổng sai số nội cụm (Inertia).
+Do đó, K = 3 là số cụm hợp lý nhất, đảm bảo sự cân bằng giữa độ chính xác và đơn giản của mô hình phân cụm.
+
+• Nhận xét về kết quả phân cụm
+Sau khi áp dụng K-means với K = 3 và giảm chiều bằng PCA để trực quan hóa, biểu đồ cho thấy 3 nhóm cầu thủ được phân chia khá rõ ràng.
+Dựa trên các đặc điểm thống kê của từng cụm (có thể phân tích thêm bằng groupby('Cluster').mean()), ta có thể suy luận:
+
+Cụm 0: Cầu thủ tấn công (có chỉ số Goals, Shots, xG cao)
+
+Cụm 1: Tiền vệ tổ chức (có chỉ số Pass%, xA, Key Passes cao)
+
+Cụm 2: Hậu vệ (có chỉ số Tackles, Interceptions cao)
+
+Việc phân cụm giúp hiểu rõ vai trò và phong cách thi đấu của cầu thủ, hữu ích cho việc tuyển chọn đội hình hoặc phân tích chiến thuật.
+
+• Biểu đồ phân cụm 2D sau PCA
+Biểu đồ lưu tại kmeans_pca_clusters.png thể hiện phân cụm 2 chiều sau PCA.
+Ta thấy các cụm có sự tách biệt hợp lý, cho thấy các chỉ số thống kê có khả năng phân biệt rõ ràng giữa các nhóm cầu thủ.
