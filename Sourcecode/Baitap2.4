@@ -1,0 +1,23 @@
+#Xác định đội bóng có điểm số cao nhất cho mỗi chỉ số thống kê. Dựa vào phân tích, bạn nghĩ đội nào đang có phong độ tốt nhất tại Ngoại hạng Anh mùa 2024–2025?
+
+
+import pandas as pd
+
+
+df = pd.read_csv("results2.csv")
+
+
+df_teams = df[df["Team"] != "all"]
+
+mean_cols = [col for col in df_teams.columns if col.startswith("Mean of")]
+
+top_teams = {}
+
+for col in mean_cols:
+    top_team = df_teams.loc[df_teams[col].idxmax()]
+    stat_name = col.replace("Mean of ", "")
+    top_teams[stat_name] = (top_team["Team"], top_team[col])
+
+print(" Đội có điểm cao nhất theo từng chỉ số (mean):")
+for stat, (team, value) in top_teams.items():
+    print(f"  - {stat}: {team} ({value:.2f})")
