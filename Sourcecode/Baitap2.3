@@ -1,0 +1,39 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import os
+
+df = pd.read_csv("results.csv")
+
+
+numeric_cols = df.select_dtypes(include='number').columns
+
+
+os.makedirs("histograms", exist_ok=True)
+
+
+for col in numeric_cols:
+    plt.figure(figsize=(8, 5))
+    df[col].hist(bins=20, edgecolor='black')
+    plt.title(f"Histogram of {col} (All Players)")
+    plt.xlabel(col)
+    plt.ylabel("Frequency")
+    plt.tight_layout()
+    plt.savefig(f"histograms/all_{col}.png")
+    plt.close()
+
+if "Squad" in df.columns:
+    teams = df["Squad"].unique()
+    for team in teams:
+        team_df = df[df["Squad"] == team]
+        for col in numeric_cols:
+            plt.figure(figsize=(8, 5))
+            team_df[col].hist(bins=20, edgecolor='black')
+            plt.title(f"Histogram of {col} ({team})")
+            plt.xlabel(col)
+            plt.ylabel("Frequency")
+            plt.tight_layout()
+            filename = f"histograms/{team.replace(' ', '_')}_{col}.png"
+            plt.savefig(filename)
+            plt.close()
+
+print(" Đã vẽ xong toàn bộ biểu đồ histogram. Lưu tại thư mục ./histograms/")
