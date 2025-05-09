@@ -1,0 +1,48 @@
+import pandas as pd
+from bs4 import BeautifulSoup
+import requests
+
+def fetch_player_transfer_values(url):
+    try:
+        headers = {'User-Agent': 'Mozilla/5.0'}
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.content, 'html.parser')
+
+        player_table = soup.find('table', {'class': 'table'})  # Adjust class if needed
+        if not player_table:
+            print("Player table not found.")
+            return pd.DataFrame()
+
+        players_data = []
+        for row in player_table.find_all('tr')[1:]:  # Skip header row
+            try:
+                minutes_played_element = row.find('td', {'data-stat': 'minutes'})
+                if minutes_played_element:
+                    minutes_played = int(minutes_played_element.text)
+                    if minutes_played > 900:
+                        player_data = {}
+                        player_data['Name'] = row.find('a').text if row.find('a') else 'N/a'
+                        player_data['Team'] = row.find('td', {'data-stat': 'team'}).text if row.find('td', {'data-stat': 'team'}) else 'N/a'
+                        player_data['Transfer_Value'] = row.find('td', {'data-stat': 'value'}).text if row.find('td', {'data-stat': 'value'}) else 'N/a'
+                        players_data.append(player_data)
+            except:
+                continue
+
+        return pd.DataFrame(players_data)
+
+    except requests.exceptions.RequestException as e:
+        print(f"Request error: {e}")
+        return pd.DataFrame()
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return pd.DataFrame()
+
+# Example usage: Replace with the actual URL from footballtransfers.com
+url = "https://www.footballtransfers.com/en/values"  #This is a more specific URL
+player_stats_df = fetch_player_transfer_values(url)
+
+if not player_stats_df.empty:
+    print(player_stats_df.to_string())
+else:
+    print("No player data found or an error occurred.")
